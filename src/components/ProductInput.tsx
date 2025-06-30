@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Lightbulb, Target, Users, Zap } from 'lucide-react';
+import { ArrowRight, Zap, Target, Users, Lightbulb } from 'lucide-react';
 import { ProductInput, Language } from '../types';
 import { DocumentUpload } from './DocumentUpload';
 import { getTranslation } from '../utils/translations';
@@ -12,12 +12,12 @@ interface ProductInputProps {
 
 export const ProductInputForm: React.FC<ProductInputProps> = ({ onSubmit, isLoading, language }) => {
   const [formData, setFormData] = useState<ProductInput>({
-    name: '',
-    category: '',
-    description: '',
-    targetAudience: '',
-    keyFeatures: '',
-    painPoints: '',
+    name: 'Smart Composting Bin',
+    category: 'other',
+    description: 'A sleek, odor-free smart composting bin for modern kitchens. It automatically breaks down food waste and sends data to a companion app that tracks the user\'s environmental impact. The app also provides rewards and tips for a more sustainable lifestyle.',
+    targetAudience: 'Environmentally conscious families and homeowners, ages 30-55, who appreciate both technology and design and want to reduce their household waste.',
+    keyFeatures: 'Sleek, odor-free design\nAutomatically breaks down food waste\nCompanion app for impact tracking\nRewards and tips for sustainability',
+    painPoints: 'Food waste management is often messy and smelly\nDesire for a sustainable lifestyle without the hassle\nDifficulty tracking personal environmental impact',
     documents: [],
     links: []
   });
@@ -58,21 +58,22 @@ export const ProductInputForm: React.FC<ProductInputProps> = ({ onSubmit, isLoad
   return (
     <div className="max-w-6xl mx-auto">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl md:text-6xl font-display text-white uppercase mb-4">
           {t('describeProduct')}
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-xl text-white/80 max-w-2xl mx-auto">
           {t('productInputSubtitle')}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column - Basic Info */}
-          <div className="space-y-6">
+        <div className="grid lg:grid-cols-2 gap-8">
+          
+          <div className="space-y-6 bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
+            <h2 className="text-2xl font-display text-white">{t('coreInformation')}</h2>
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
-                <Zap className="w-4 h-4 mr-2 text-purple-600" />
+              <label className="flex items-center text-sm font-bold text-brand-green mb-2">
+                <Zap className="w-4 h-4 mr-2" />
                 {t('productName')}
               </label>
               <input
@@ -80,34 +81,33 @@ export const ProductInputForm: React.FC<ProductInputProps> = ({ onSubmit, isLoad
                 placeholder={t('productNamePlaceholder')}
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                className="w-full bg-black/20 text-white px-4 py-3 rounded-lg border border-white/30 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-colors"
                 required
               />
             </div>
 
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
-                <Target className="w-4 h-4 mr-2 text-purple-600" />
+              <label className="flex items-center text-sm font-bold text-brand-green mb-2">
+                <Target className="w-4 h-4 mr-2" />
                 {t('productCategory')}
               </label>
               <select
                 value={formData.category}
                 onChange={(e) => handleChange('category', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                className="w-full bg-black/20 text-white px-4 py-3 rounded-lg border border-white/30 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-colors"
                 required
               >
-                <option value="">{t('selectCategory')}</option>
+                <option value="" className="text-black">{t('selectCategory')}</option>
                 {categories.map((category) => (
-                  <option key={category.value} value={category.value}>
+                  <option key={category.value} value={category.value} className="text-black">
                     {category.label}
                   </option>
                 ))}
               </select>
             </div>
-
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
-                <Users className="w-4 h-4 mr-2 text-purple-600" />
+              <label className="flex items-center text-sm font-bold text-brand-green mb-2">
+                <Users className="w-4 h-4 mr-2" />
                 {t('targetAudience')}
               </label>
               <textarea
@@ -115,17 +115,13 @@ export const ProductInputForm: React.FC<ProductInputProps> = ({ onSubmit, isLoad
                 value={formData.targetAudience}
                 onChange={(e) => handleChange('targetAudience', e.target.value)}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-none"
+                className="w-full bg-black/20 text-white px-4 py-3 rounded-lg border border-white/30 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-colors resize-none"
                 required
               />
             </div>
-          </div>
-
-          {/* Middle Column - Product Details */}
-          <div className="space-y-6">
-            <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
-                <Lightbulb className="w-4 h-4 mr-2 text-purple-600" />
+             <div>
+              <label className="flex items-center text-sm font-bold text-brand-green mb-2">
+                <Lightbulb className="w-4 h-4 mr-2" />
                 {t('productDescription')}
               </label>
               <textarea
@@ -133,14 +129,17 @@ export const ProductInputForm: React.FC<ProductInputProps> = ({ onSubmit, isLoad
                 value={formData.description}
                 onChange={(e) => handleChange('description', e.target.value)}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-none"
+                className="w-full bg-black/20 text-white px-4 py-3 rounded-lg border border-white/30 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-colors resize-none"
                 required
               />
             </div>
-
+          </div>
+          
+          <div className="space-y-6 bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
+            <h2 className="text-2xl font-display text-white">{t('featuresAndPainPoints')}</h2>
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
-                <Zap className="w-4 h-4 mr-2 text-purple-600" />
+              <label className="flex items-center text-sm font-bold text-brand-green mb-2">
+                <Zap className="w-4 h-4 mr-2" />
                 {t('keyFeatures')}
               </label>
               <textarea
@@ -148,14 +147,14 @@ export const ProductInputForm: React.FC<ProductInputProps> = ({ onSubmit, isLoad
                 value={formData.keyFeatures}
                 onChange={(e) => handleChange('keyFeatures', e.target.value)}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-none"
+                className="w-full bg-black/20 text-white px-4 py-3 rounded-lg border border-white/30 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-colors resize-none"
                 required
               />
             </div>
 
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
-                <Target className="w-4 h-4 mr-2 text-purple-600" />
+              <label className="flex items-center text-sm font-bold text-brand-green mb-2">
+                <Target className="w-4 h-4 mr-2" />
                 {t('userPainPoints')}
               </label>
               <textarea
@@ -163,14 +162,11 @@ export const ProductInputForm: React.FC<ProductInputProps> = ({ onSubmit, isLoad
                 value={formData.painPoints}
                 onChange={(e) => handleChange('painPoints', e.target.value)}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-none"
+                className="w-full bg-black/20 text-white px-4 py-3 rounded-lg border border-white/30 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-colors resize-none"
                 required
               />
             </div>
-          </div>
-
-          {/* Right Column - Supporting Materials */}
-          <div className="bg-gray-50 rounded-xl p-6">
+            
             <DocumentUpload
               documents={formData.documents || []}
               links={formData.links || []}
@@ -185,17 +181,17 @@ export const ProductInputForm: React.FC<ProductInputProps> = ({ onSubmit, isLoad
           <button
             type="submit"
             disabled={!isFormValid || isLoading}
-            className="flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+            className="font-display uppercase px-12 py-4 bg-brand-green text-black font-bold text-lg rounded-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg"
           >
             {isLoading ? (
               <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black mr-3"></div>
                 {t('generatingPersonas')}
               </>
             ) : (
               <>
                 {t('generatePersonas')}
-                <ArrowRight className="w-5 h-5 ml-3" />
+                <ArrowRight className="w-6 h-6 ml-3 inline-block" />
               </>
             )}
           </button>

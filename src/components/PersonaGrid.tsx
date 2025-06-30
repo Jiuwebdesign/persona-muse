@@ -45,24 +45,25 @@ export const PersonaGrid: React.FC<PersonaGridProps> = ({
       )}
 
       <div className="text-center mb-12">
-        <div className="flex items-center justify-center space-x-4 mb-4">
-          <h1 className="text-4xl font-bold text-gray-900">
-            {t('yourGeneratedPersonas')}
-          </h1>
-          <button
-            onClick={handleExportPDF}
-            className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            {t('exportPDF')}
-          </button>
-        </div>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <h1 className="text-4xl md:text-6xl font-display text-white uppercase mb-4">
+          {t('yourGeneratedPersonas')}
+        </h1>
+        <p className="text-xl text-white/80 max-w-3xl mx-auto">
           {t('personasSubtitle')}
         </p>
       </div>
+      
+      <div className="text-center mb-8">
+        <button
+          onClick={handleExportPDF}
+          className="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/20 transition-colors duration-200"
+        >
+          <Download className="w-5 h-5 mr-2 inline-block" />
+          {t('exportPDF')}
+        </button>
+      </div>
 
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-12">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8 mb-12">
         {personas.map((persona) => (
           <EditablePersonaCard
             key={persona.id}
@@ -76,14 +77,20 @@ export const PersonaGrid: React.FC<PersonaGridProps> = ({
       </div>
 
       {selectedPersonas.length > 0 && (
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="flex items-center justify-between">
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50">
+          <div className="bg-white/80 backdrop-blur-lg rounded-xl shadow-2xl p-4 flex items-center justify-between border border-white/30">
             <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+              <div className="flex -space-x-4">
+                {personas
+                  .filter(p => selectedPersonas.includes(p.id))
+                  .slice(0, 3)
+                  .map(p => (
+                    <img key={p.id} src={p.imageUrl} alt={p.name} className="w-12 h-12 rounded-full object-cover border-2 border-white"/>
+                  ))
+                }
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="font-bold text-gray-900">
                   {selectedPersonas.length} {t('personasSelected')}
                 </h3>
                 <p className="text-sm text-gray-600">
@@ -93,21 +100,14 @@ export const PersonaGrid: React.FC<PersonaGridProps> = ({
             </div>
             <button
               onClick={onProceed}
-              className="flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="font-display uppercase px-8 py-3 bg-brand-green text-black font-bold text-md rounded-lg hover:scale-105 transition-transform duration-300"
             >
               {t('getStrategy')}
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <ArrowRight className="w-5 h-5 ml-2 inline-block" />
             </button>
           </div>
         </div>
       )}
-
-      <div className="text-center">
-        <div className="inline-flex items-center space-x-2 text-sm text-gray-500">
-          <Users className="w-4 h-4" />
-          <span>{t('clickToSelect')}</span>
-        </div>
-      </div>
     </div>
   );
 };

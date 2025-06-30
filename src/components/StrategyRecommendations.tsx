@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Target, TrendingUp, Users, Lightbulb, BarChart3, MessageSquare, Edit, Save, X, Download } from 'lucide-react';
+import { ArrowLeft, Target, TrendingUp, Users, Lightbulb, BarChart3, MessageSquare, Edit, Save, X, Download, ChevronDown, Edit3 } from 'lucide-react';
 import { StrategyRecommendation, Language, ProductInput, Persona } from '../types';
 import { ProjectSummary } from './ProjectSummary';
 import { getTranslation } from '../utils/translations';
@@ -12,7 +12,7 @@ interface StrategyRecommendationsProps {
   personas: Persona[];
   onBack: () => void;
   onStartOver: () => void;
-  onStrategyUpdate: (index: number, updatedStrategy: Partial<StrategyRecommendation>) => void;
+  onUpdate: (index: number, updatedStrategy: Partial<StrategyRecommendation>) => void;
   language: Language;
   productInput: ProductInput | null;
 }
@@ -38,7 +38,7 @@ export const StrategyRecommendations: React.FC<StrategyRecommendationsProps> = (
   personas,
   onBack,
   onStartOver,
-  onStrategyUpdate,
+  onUpdate,
   language,
   productInput
 }) => {
@@ -54,7 +54,7 @@ export const StrategyRecommendations: React.FC<StrategyRecommendationsProps> = (
 
   const handleSave = (index: number) => {
     if (editedStrategy) {
-      onStrategyUpdate(index, editedStrategy);
+      onUpdate(index, editedStrategy);
       setEditingIndex(null);
       setEditedStrategy(null);
     }
@@ -78,162 +78,30 @@ export const StrategyRecommendations: React.FC<StrategyRecommendationsProps> = (
   const selectedPersonaData = personas.filter(p => selectedPersonas.includes(p.id));
 
   return (
-    <div className="max-w-6xl mx-auto" id="strategy-section">
-      {/* Project Summary */}
+    <div className="max-w-7xl mx-auto">
       {productInput && (
-        <ProjectSummary productInput={productInput} language={language} />
-      )}
-
-      {/* Selected Personas Summary */}
-      {selectedPersonaData.length > 0 && (
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border-l-4 border-green-600">
-          <div className="flex items-center mb-4">
-            <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg mr-3">
-              <Users className="w-5 h-5 text-green-600" />
-            </div>
-            <h2 className="text-xl font-bold text-gray-900">{t('selectedPersonas')}</h2>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {selectedPersonaData.map((persona) => (
-              <div key={persona.id} className="bg-gray-50 rounded-lg p-4">
-                <div className="flex items-center space-x-3">
-                  <img
-                    src={persona.imageUrl}
-                    alt={persona.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{persona.name}</h3>
-                    <p className="text-sm text-gray-600">{persona.age} {t('years')}, {persona.occupation}</p>
-                    <p className="text-xs text-gray-500 italic">"{persona.quote.substring(0, 50)}..."</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ProjectSummary productInput={productInput} language={language} isStrategyView />
       )}
 
       <div className="text-center mb-12">
-        <div className="flex items-center justify-center space-x-4 mb-4">
-          <h1 className="text-4xl font-bold text-gray-900">
-            {t('strategicRecommendations')}
-          </h1>
-          <button
-            onClick={handleExportPDF}
-            className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            {t('exportPDF')}
-          </button>
-        </div>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-display text-white mb-4">
+          {t('strategyRecommendations')}
+        </h1>
+        <p className="text-lg text-white/80 max-w-2xl mx-auto">
           {t('strategySubtitle')}
         </p>
       </div>
 
-      <div className="space-y-6 mb-12">
-        {strategies.map((strategy, index) => {
-          const IconComponent = categoryIcons[strategy.category as keyof typeof categoryIcons] || Target;
-          const isEditing = editingIndex === index;
-          const currentStrategy = isEditing ? editedStrategy! : strategy;
-          
-          return (
-            <div key={index} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg">
-                      <IconComponent className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        {isEditing ? (
-                          <input
-                            value={currentStrategy.title}
-                            onChange={(e) => setEditedStrategy({...currentStrategy, title: e.target.value})}
-                            className="text-xl font-semibold text-gray-900 bg-transparent border-b border-gray-300 focus:border-purple-500 outline-none"
-                          />
-                        ) : (
-                          <h3 className="text-xl font-semibold text-gray-900">{strategy.title}</h3>
-                        )}
-                        <span className={`px-3 py-1 text-xs font-medium rounded-full border ${priorityColors[currentStrategy.priority]}`}>
-                          {currentStrategy.priority} {t('priority')}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-500">{currentStrategy.category}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    {isEditing ? (
-                      <>
-                        <button
-                          onClick={() => handleSave(index)}
-                          className="flex items-center px-3 py-1 text-sm text-green-600 hover:text-green-700 transition-colors"
-                        >
-                          <Save className="w-4 h-4 mr-1" />
-                          {t('save')}
-                        </button>
-                        <button
-                          onClick={handleCancel}
-                          className="flex items-center px-3 py-1 text-sm text-red-600 hover:text-red-700 transition-colors"
-                        >
-                          <X className="w-4 h-4 mr-1" />
-                          {t('cancel')}
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        onClick={() => handleEdit(index)}
-                        className="flex items-center px-3 py-1 text-sm text-gray-600 hover:text-purple-600 transition-colors"
-                      >
-                        <Edit className="w-4 h-4 mr-1" />
-                        {t('edit')}
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {isEditing ? (
-                  <textarea
-                    value={currentStrategy.description}
-                    onChange={(e) => setEditedStrategy({...currentStrategy, description: e.target.value})}
-                    className="w-full text-gray-600 mb-6 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                    rows={3}
-                  />
-                ) : (
-                  <p className="text-gray-600 mb-6">{strategy.description}</p>
-                )}
-
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-900 mb-3">{t('actionItems')}</h4>
-                  <div className="grid md:grid-cols-2 gap-3">
-                    {currentStrategy.actionItems.map((item, itemIndex) => (
-                      <div key={itemIndex} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                        {isEditing ? (
-                          <input
-                            value={item}
-                            onChange={(e) => {
-                              const newActionItems = [...currentStrategy.actionItems];
-                              newActionItems[itemIndex] = e.target.value;
-                              setEditedStrategy({...currentStrategy, actionItems: newActionItems});
-                            }}
-                            className="text-sm text-gray-700 bg-transparent border-b border-gray-300 focus:border-purple-500 outline-none flex-1"
-                          />
-                        ) : (
-                          <span className="text-sm text-gray-700">{item}</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <div className="space-y-4">
+        {strategies.map((strategy, index) => (
+          <StrategyCard
+            key={index}
+            strategy={strategy}
+            index={index}
+            onUpdate={onUpdate}
+            language={language}
+          />
+        ))}
       </div>
 
       <div className="flex items-center justify-between pt-8 border-t border-gray-200">
@@ -261,6 +129,106 @@ export const StrategyRecommendations: React.FC<StrategyRecommendationsProps> = (
           </button>
         </div>
       </div>
+    </div>
+  );
+};
+
+interface StrategyCardProps {
+  strategy: StrategyRecommendation;
+  index: number;
+  onUpdate: (index: number, updatedStrategy: Partial<StrategyRecommendation>) => void;
+  language: Language;
+}
+
+const StrategyCard: React.FC<StrategyCardProps> = ({ strategy, index, onUpdate, language }) => {
+  const [isOpen, setIsOpen] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedStrategy, setEditedStrategy] = useState(strategy);
+  const t = (key: string) => getTranslation(language, key);
+
+  const handleSave = () => {
+    onUpdate(index, editedStrategy);
+    setIsEditing(false);
+  };
+  
+  const handleCancel = () => {
+    setEditedStrategy(strategy);
+    setIsEditing(false);
+  };
+
+  const priorityStyles = {
+    High: 'bg-red-500',
+    Medium: 'bg-yellow-500',
+    Low: 'bg-green-500',
+  };
+
+  return (
+    <div className="bg-white/90 rounded-xl shadow-lg transition-all duration-300">
+      <div
+        className="flex items-center justify-between p-6 cursor-pointer"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className="flex items-center space-x-4">
+          <div className="flex-shrink-0 bg-brand-blue/10 p-3 rounded-full">
+            <Lightbulb className="w-6 h-6 text-brand-blue" />
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-900">{strategy.title}</h3>
+            <p className="text-sm text-gray-600">{strategy.category}</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          <span className={`px-3 py-1 text-xs font-semibold text-white rounded-full ${priorityStyles[strategy.priority]}`}>
+            {t(strategy.priority.toLowerCase())}
+          </span>
+          <ChevronDown className={`w-6 h-6 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        </div>
+      </div>
+      
+      {isOpen && (
+        <div className="px-6 pb-6">
+          <div className="border-t border-gray-200 pt-4">
+            {isEditing ? (
+              <div className="space-y-4">
+                <textarea
+                  value={editedStrategy.description}
+                  onChange={(e) => setEditedStrategy({...editedStrategy, description: e.target.value})}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  rows={3}
+                />
+                <textarea
+                  value={editedStrategy.actionItems.join('\n')}
+                  onChange={(e) => setEditedStrategy({...editedStrategy, actionItems: e.target.value.split('\n')})}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  rows={4}
+                />
+                <div className="flex justify-end space-x-2">
+                  <button onClick={handleCancel} className="flex items-center px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+                    <X className="w-4 h-4 mr-1"/>{t('cancel')}
+                  </button>
+                  <button onClick={handleSave} className="flex items-center px-3 py-1 bg-brand-green text-black rounded-md hover:bg-opacity-80">
+                    <Save className="w-4 h-4 mr-1"/>{t('save')}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p className="text-gray-700 mb-4">{strategy.description}</p>
+                <ul className="space-y-2 list-disc list-inside">
+                  {strategy.actionItems.map((item, i) => (
+                    <li key={i} className="text-gray-600">{item}</li>
+                  ))}
+                </ul>
+                <div className="flex justify-end mt-4">
+                  <button onClick={() => setIsEditing(true)} className="flex items-center px-3 py-1 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200">
+                    <Edit3 className="w-4 h-4 mr-1"/>{t('edit')}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

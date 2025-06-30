@@ -6,64 +6,46 @@ import { getTranslation } from '../utils/translations';
 interface ProjectSummaryProps {
   productInput: ProductInput;
   language: Language;
+  isStrategyView?: boolean;
 }
 
-export const ProjectSummary: React.FC<ProjectSummaryProps> = ({ productInput, language }) => {
+export const ProjectSummary: React.FC<ProjectSummaryProps> = ({ productInput, language, isStrategyView }) => {
   const t = (key: string) => getTranslation(language, key);
 
-  return (
-    <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border-l-4 border-purple-600">
-      <div className="flex items-center mb-4">
-        <div className="flex items-center justify-center w-10 h-10 bg-purple-100 rounded-lg mr-3">
-          <FileText className="w-5 h-5 text-purple-600" />
+  const summaryItems = [
+    { label: t('productName'), value: productInput.name },
+    { label: t('productCategory'), value: productInput.category },
+    { label: t('productDescription'), value: productInput.description },
+    { label: t('targetAudience'), value: productInput.targetAudience },
+  ];
+
+  if (isStrategyView) {
+    return (
+      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8 border border-white/20">
+        <div className="flex items-center text-white mb-4">
+          <FileText className="w-5 h-5 mr-3 text-brand-green" />
+          <h2 className="text-2xl font-display">{t('projectSummary')}</h2>
         </div>
-        <h2 className="text-xl font-bold text-gray-900">{t('projectSummary')}</h2>
+        <p className="text-white/80">
+          {t('generatingStrategiesFor')} <span className="font-bold text-white">{productInput.name}</span>.
+        </p>
       </div>
-      
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="space-y-4">
-          <div>
-            <div className="flex items-center mb-2">
-              <Target className="w-4 h-4 text-purple-600 mr-2" />
-              <h3 className="font-semibold text-gray-900">{productInput.name}</h3>
-            </div>
-            <p className="text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
-              {productInput.description}
-            </p>
+    );
+  }
+
+  return (
+    <div className="bg-white/90 rounded-xl shadow-lg p-6 mb-8">
+      <div className="flex items-center mb-4">
+        <FileText className="w-5 h-5 mr-3 text-brand-blue" />
+        <h2 className="text-2xl font-bold text-gray-900">{t('projectSummary')}</h2>
+      </div>
+      <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
+        {summaryItems.map(item => (
+          <div key={item.label}>
+            <h3 className="text-sm font-semibold text-gray-600 mb-1">{item.label}</h3>
+            <p className="text-gray-800">{item.value}</p>
           </div>
-          
-          <div>
-            <div className="flex items-center mb-2">
-              <Users className="w-4 h-4 text-purple-600 mr-2" />
-              <h4 className="font-medium text-gray-700">{t('targetAudience')}</h4>
-            </div>
-            <p className="text-sm text-gray-600">
-              {productInput.targetAudience}
-            </p>
-          </div>
-        </div>
-        
-        <div className="space-y-4">
-          <div>
-            <div className="flex items-center mb-2">
-              <Lightbulb className="w-4 h-4 text-purple-600 mr-2" />
-              <h4 className="font-medium text-gray-700">{t('keyFeatures')}</h4>
-            </div>
-            <p className="text-sm text-gray-600">
-              {productInput.keyFeatures}
-            </p>
-          </div>
-          
-          <div>
-            <div className="flex items-center mb-2">
-              <Target className="w-4 h-4 text-purple-600 mr-2" />
-              <h4 className="font-medium text-gray-700">{t('userPainPoints')}</h4>
-            </div>
-            <p className="text-sm text-gray-600">
-              {productInput.painPoints}
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
       
       {/* Supporting Materials */}
