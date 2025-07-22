@@ -14,6 +14,7 @@ interface PersonaGridProps {
   onProceed: () => void;
   language: Language;
   productInput: ProductInput | null;
+  isLoading: boolean;
 }
 
 export const PersonaGrid: React.FC<PersonaGridProps> = ({
@@ -23,7 +24,8 @@ export const PersonaGrid: React.FC<PersonaGridProps> = ({
   onPersonaUpdate,
   onProceed,
   language,
-  productInput
+  productInput,
+  isLoading
 }) => {
   const t = (key: string) => getTranslation(language, key);
 
@@ -45,7 +47,7 @@ export const PersonaGrid: React.FC<PersonaGridProps> = ({
       )}
 
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-display text-white uppercase mb-4">
+        <h1 className="text-4xl md:text-6xl font-display text-white uppercase mb-4 mt-24">
           {t('yourGeneratedPersonas')}
         </h1>
         <p className="text-xl text-white/80 max-w-3xl mx-auto">
@@ -53,7 +55,7 @@ export const PersonaGrid: React.FC<PersonaGridProps> = ({
         </p>
       </div>
       
-      <div className="text-center mb-8">
+      <div className="text-center mb-16">
         <button
           onClick={handleExportPDF}
           className="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/20 transition-colors duration-200"
@@ -100,10 +102,20 @@ export const PersonaGrid: React.FC<PersonaGridProps> = ({
             </div>
             <button
               onClick={onProceed}
-              className="font-display uppercase px-8 py-3 bg-brand-green text-black font-bold text-md rounded-lg hover:scale-105 transition-transform duration-300"
+              disabled={isLoading}
+              className="font-display uppercase px-8 py-3 bg-brand-green text-black font-bold text-md rounded-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
             >
-              {t('getStrategy')}
-              <ArrowRight className="w-5 h-5 ml-2 inline-block" />
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black mr-3"></div>
+                  {t('generatingStrategy')}
+                </>
+              ) : (
+                <>
+                  {t('getStrategy')}
+                  <ArrowRight className="w-5 h-5 ml-2 inline-block" />
+                </>
+              )}
             </button>
           </div>
         </div>

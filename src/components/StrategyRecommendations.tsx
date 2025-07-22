@@ -107,7 +107,7 @@ export const StrategyRecommendations: React.FC<StrategyRecommendationsProps> = (
       <div className="flex items-center justify-between pt-8 border-t border-gray-200">
         <button
           onClick={onBack}
-          className="flex items-center px-6 py-3 text-gray-600 hover:text-gray-900 transition-colors"
+          className="flex items-center px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors shadow-lg"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           {t('backToPersonas')}
@@ -116,7 +116,7 @@ export const StrategyRecommendations: React.FC<StrategyRecommendationsProps> = (
         <div className="flex space-x-4">
           <button
             onClick={onStartOver}
-            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors shadow-lg"
           >
             {t('startOver')}
           </button>

@@ -84,7 +84,12 @@ export const EditablePersonaCard: React.FC<EditablePersonaCardProps> = ({
             </div>
         ) : (
             <div className="flex justify-end space-x-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={(e) => { e.stopPropagation(); setShowModal(true); }} className="p-2 bg-black/20 rounded-full hover:bg-white/40"><Eye className="w-4 h-4"/></button>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setShowModal(true); }} 
+                  className="px-4 py-2 bg-brand-green text-black text-sm font-bold rounded-lg hover:scale-110 transition-transform shadow-lg"
+                >
+                  {t('viewDetails')}
+                </button>
                 <button onClick={(e) => { e.stopPropagation(); setIsEditing(true); }} className="p-2 bg-black/20 rounded-full hover:bg-white/40"><Edit3 className="w-4 h-4"/></button>
             </div>
         )}
@@ -117,6 +122,7 @@ export const EditablePersonaCard: React.FC<EditablePersonaCardProps> = ({
         persona={persona}
         isOpen={showModal}
         onClose={() => setShowModal(false)}
+        onUpdate={(updatedPersona) => onUpdate(persona.id, updatedPersona)}
         language={language}
       />
     </>

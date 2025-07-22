@@ -2,6 +2,30 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Persona, StrategyRecommendation, ProductInput } from '../types';
 
+// Helper function to convert image URL to base64 if needed
+const getImageAsBase64 = async (imageUrl: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    if (imageUrl.startsWith('data:')) {
+      // Already base64
+      resolve(imageUrl);
+    } else {
+      // Need to convert URL to base64
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx?.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.onerror = () => resolve(imageUrl); // Fallback to original URL
+      img.src = imageUrl;
+    }
+  });
+};
+
 export const exportPersonasToPDF = async (
   personas: Persona[],
   strategies: StrategyRecommendation[],
@@ -116,22 +140,42 @@ export const exportPersonasToPDF = async (
   pdf.text('User Personas', 20, yPosition);
   yPosition += 15;
 
-  personas.forEach((persona, index) => {
-    if (yPosition > pageHeight - 80) {
+  for (let index = 0; index < personas.length; index++) {
+    const persona = personas[index];
+    
+    if (yPosition > pageHeight - 100) {
       pdf.addPage();
       yPosition = 20;
     }
 
-    // Persona Header
-    pdf.setFontSize(16);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`${index + 1}. ${persona.name}`, 20, yPosition);
-    yPosition += 8;
+    // Add persona image
+    try {
+      const imageBase64 = await getImageAsBase64(persona.imageUrl);
+      const imgWidth = 25;
+      const imgHeight = 25;
+      pdf.addImage(imageBase64, 'JPEG', 20, yPosition, imgWidth, imgHeight);
+      
+      // Persona Header next to image
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`${index + 1}. ${persona.name}`, 50, yPosition + 8);
+      
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`${persona.age} years old, ${persona.occupation} | ${persona.location}`, 50, yPosition + 16);
+      yPosition += Math.max(imgHeight, 20) + 8;
+    } catch (error) {
+      // Fallback without image
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`${index + 1}. ${persona.name}`, 20, yPosition);
+      yPosition += 8;
 
-    pdf.setFontSize(12);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(`${persona.age} years old, ${persona.occupation} | ${persona.location}`, 20, yPosition);
-    yPosition += 8;
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`${persona.age} years old, ${persona.occupation} | ${persona.location}`, 20, yPosition);
+      yPosition += 8;
+    }
 
     // Bio
     pdf.setFontSize(10);
@@ -198,7 +242,7 @@ export const exportPersonasToPDF = async (
     });
 
     yPosition = Math.max(goalY, frustY) + 15;
-  });
+  }
 
   // Strategies Section
   if (strategies.length > 0) {

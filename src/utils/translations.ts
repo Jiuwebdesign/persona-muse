@@ -10,6 +10,10 @@ export const translations = {
     step2: 'Generated Personas',
     step3: 'Strategy Recommendations',
     
+    // Confirmation
+    confirmRestart: 'Start Over?',
+    confirmRestartMessage: 'Are you sure you want to start over? This will delete all generated personas and strategies.',
+    
     // Product Input
     describeProduct: 'Describe Your Product',
     productInputSubtitle: 'Share details about your product and target audience. Our AI will generate rich, actionable user personas to guide your design decisions.',
@@ -27,6 +31,11 @@ export const translations = {
     userPainPointsPlaceholder: 'What problems does your product solve? What frustrates your users?',
     generatePersonas: 'Generate Personas',
     generatingPersonas: 'Generating Personas...',
+    generatingStrategy: 'Generating Strategy...',
+    
+    // New fields for left/right layout
+    coreInformation: 'Core Information',
+    featuresAndPainPoints: 'Features & Pain Points',
     
     // New document/link fields
     supportingDocuments: 'Supporting Documents (Optional)',
@@ -47,7 +56,7 @@ export const translations = {
     personasSubtitle: 'Meet your users! Select one or more personas that best represent your target audience. Each persona includes detailed insights, mood boards, and voice characteristics.',
     personasSelected: 'Personas Selected',
     readyToGenerate: 'Ready to generate strategic recommendations based on your selection',
-    getStrategy: 'Get Strategy',
+    getStrategy: 'Generate Strategy',
     clickToSelect: 'Click on personas to select them, then proceed to get strategic recommendations',
     
     // Persona Card
@@ -66,6 +75,9 @@ export const translations = {
     save: 'Save',
     cancel: 'Cancel',
     exportPDF: 'Export PDF',
+    viewDetails: 'View Details',
+    changeImage: 'Change Image',
+    uploadImage: 'Upload Image',
     
     // Strategy
     strategicRecommendations: 'Strategic Recommendations',
@@ -124,6 +136,10 @@ export const translations = {
     step2: 'Generierte Personas',
     step3: 'Strategieempfehlungen',
     
+    // Confirmation
+    confirmRestart: 'Von vorne beginnen?',
+    confirmRestartMessage: 'Sind Sie sicher, dass Sie von vorne beginnen möchten? Dies wird alle generierten Personas und Strategien löschen.',
+    
     // Product Input
     describeProduct: 'Beschreiben Sie Ihr Produkt',
     productInputSubtitle: 'Teilen Sie Details über Ihr Produkt und Ihre Zielgruppe mit. Unsere KI generiert reichhaltige, umsetzbare Benutzer-Personas zur Orientierung Ihrer Design-Entscheidungen.',
@@ -141,6 +157,11 @@ export const translations = {
     userPainPointsPlaceholder: 'Welche Probleme löst Ihr Produkt? Was frustriert Ihre Benutzer?',
     generatePersonas: 'Personas Generieren',
     generatingPersonas: 'Personas werden generiert...',
+    generatingStrategy: 'Strategie wird generiert...',
+    
+    // New fields for left/right layout
+    coreInformation: 'Kerninformationen',
+    featuresAndPainPoints: 'Funktionen & Schmerzpunkte',
     
     // New document/link fields
     supportingDocuments: 'Unterstützende Dokumente (Optional)',
@@ -180,6 +201,9 @@ export const translations = {
     save: 'Speichern',
     cancel: 'Abbrechen',
     exportPDF: 'PDF exportieren',
+    viewDetails: 'Details anzeigen',
+    changeImage: 'Bild ändern',
+    uploadImage: 'Bild hochladen',
     
     // Strategy
     strategicRecommendations: 'Strategische Empfehlungen',
@@ -238,6 +262,10 @@ export const translations = {
     step2: '生成的用户画像',
     step3: '策略建议',
     
+    // Confirmation
+    confirmRestart: '重新开始？',
+    confirmRestartMessage: '您确定要重新开始吗？这将删除所有生成的用户画像和策略。',
+    
     // Product Input
     describeProduct: '描述您的产品',
     productInputSubtitle: '分享您的产品和目标受众的详细信息。我们的AI将生成丰富、可操作的用户画像来指导您的设计决策。',
@@ -255,6 +283,11 @@ export const translations = {
     userPainPointsPlaceholder: '您的产品解决什么问题？什么让您的用户感到沮丧？',
     generatePersonas: '生成用户画像',
     generatingPersonas: '正在生成用户画像...',
+    generatingStrategy: '正在生成策略...',
+    
+    // New fields for left/right layout
+    coreInformation: '核心信息',
+    featuresAndPainPoints: '功能与痛点',
     
     // New document/link fields
     supportingDocuments: '支持文档（可选）',
@@ -294,6 +327,9 @@ export const translations = {
     save: '保存',
     cancel: '取消',
     exportPDF: '导出PDF',
+    viewDetails: '查看详情',
+    changeImage: '更换图片',
+    uploadImage: '上传图片',
     
     // Strategy
     strategicRecommendations: '策略建议',
